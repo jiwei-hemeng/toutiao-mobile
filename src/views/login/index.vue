@@ -86,9 +86,9 @@ export default {
         message: '登陆中...'
       })
       try {
-        const res = await login(this.user)
-        console.log(res)
+        const { data } = await login(this.user)
         this.$toast.success('登录成功')
+        this.$store.commit('setItem', data.data)
       } catch (err) {
         console.log(err)
         this.$toast.fail('登录失败！手机号或验证码不正确')
@@ -108,8 +108,8 @@ export default {
         this.isSendSmsLoading = true
         await this.$refs['login-form'].validate('mobile')
         // 等待服务器发送验证码之后开始计时
-        this.isCountDownShow = true
         const res = await sendSms(this.user.mobile)
+        this.isCountDownShow = true
         console.log(res)
       } catch (err) {
         let message = ''
