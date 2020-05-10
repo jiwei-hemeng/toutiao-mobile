@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
     <van-nav-bar
+      class="page-nav-bar"
       title="登录"
       left-arrow
       @click-left="$router.back()"
@@ -43,11 +44,18 @@ export default {
   },
   methods: {
     async onLogin () {
+      this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: '登陆中...'
+      })
       try {
         const res = await login(this.user)
         console.log(res)
+        this.$toast.success('登录成功')
       } catch (err) {
-        console.log('登录失败！！', err)
+        console.log(err)
+        this.$toast.fail('登录失败！手机号或验证码不正确')
       }
     }
   }
