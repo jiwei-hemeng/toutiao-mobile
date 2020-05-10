@@ -89,6 +89,7 @@ export default {
         const { data } = await login(this.user)
         this.$toast.success('登录成功')
         this.$store.commit('setItem', data.data)
+        this.$router.push('/my')
       } catch (err) {
         console.log(err)
         this.$toast.fail('登录失败！手机号或验证码不正确')
