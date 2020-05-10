@@ -6,32 +6,48 @@
       left-arrow
       @click-left="$router.back()"
     />
-    <van-cell-group>
+    <van-form
+      :show-error="false"
+      :show-error-message="false"
+      validate-first
+      ref="login-form"
+      @submit="onLogin"
+      @failed="onFailed"
+    >
       <van-field
         v-model="user.mobile"
-        left-icon="smile-o"
+        icon-prefix="toutiao"
+        left-icon="shouji"
         placeholder="请输入手机号"
+        name="mobile"
+        :rules="userFormRules.mobile"
       />
       <van-field
         v-model="user.code"
         clearable
-        left-icon="music-o"
         placeholder="请输入验证码"
+        name="code"
+        :rules="userFormRules.code"
       >
+        <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
         <template #button>
           <van-button
             size="small"
             round
+            ref="login-form"
+            @click.prevent="sendSms"
           >发送验证码</van-button>
         </template>
       </van-field>
-    </van-cell-group>
-    <van-button type="info" block @click="onLogin">登录</van-button>
+      <div class="login-btn-wrap">
+        <van-button type="info" block>登录</van-button>
+      </div>
+    </van-form>
   </div>
 </template>
 
 <script>
-import { login } from '@/api/user'
+import { login, sendSms } from '@/api/user'
 export default {
   name: 'LoginIndex',
   data () {
@@ -39,6 +55,16 @@ export default {
       user: {
         mobile: '', // 手机号
         code: '' // 验证码
+      },
+      userFormRules: {
+        mobile: [
+          { required: true, message: '手机号不能为空' },
+          { pattern: /^1[3\5\7\8]\d{9}$/, message: '手机号格式错误' }
+        ],
+        code: [
+          { required: true, message: '验证码不能为空' },
+          { pattern: /^\d{6}$/, message: '验证码格式错误' }
+        ]
       }
     }
   },
@@ -56,6 +82,37 @@ export default {
       } catch (err) {
         console.log(err)
         this.$toast.fail('登录失败！手机号或验证码不正确')
+      }
+    },
+    onFailed (error) {
+      if (error.errors[0]) {
+        this.$toast({
+          message: error.errors[0].message, // 提示消息
+          position: 'top' // 防止手机键盘太高看不见提示消息
+        })
+      }
+    },
+    async sendSms () {
+      try {
+        await this.$refs['login-form'].validate('mobile')
+        const res = await sendSms(this.user.mobile)
+        console.log(res)
+      } catch (err) {
+        let message = ''
+        if (err && err.response && err.response.status === 429) {
+          // 发送短信失败的错误提示
+          message = '发送太频繁了，请稍后重试'
+        } else if (err.name === 'mobile') {
+          // 表单验证失败的错误提示
+          message = err.message
+        } else {
+          // 未知错误
+          message = '发送失败，请稍后重试'
+        }
+        this.$toast({
+          message,
+          position: 'top'
+        })
       }
     }
   }
