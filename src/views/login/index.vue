@@ -31,10 +31,18 @@
       >
         <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
         <template #button>
+          <van-count-down
+            v-if="isCountDownShow"
+            :time="1000 * 60"
+            format="ss s"
+            @finish="isCountDownShow = false"
+          />
           <van-button
             size="small"
             round
             ref="login-form"
+            v-else
+            :loading="isSendSmsLoading"
             @click.prevent="sendSms"
           >发送验证码</van-button>
         </template>
@@ -65,7 +73,9 @@ export default {
           { required: true, message: '验证码不能为空' },
           { pattern: /^\d{6}$/, message: '验证码格式错误' }
         ]
-      }
+      },
+      isCountDownShow: false,
+      isSendSmsLoading: false
     }
   },
   methods: {
@@ -94,7 +104,11 @@ export default {
     },
     async sendSms () {
       try {
+        // 防止用户多次请求发送验证码
+        this.isSendSmsLoading = true
         await this.$refs['login-form'].validate('mobile')
+        // 等待服务器发送验证码之后开始计时
+        this.isCountDownShow = true
         const res = await sendSms(this.user.mobile)
         console.log(res)
       } catch (err) {
@@ -114,6 +128,8 @@ export default {
           position: 'top'
         })
       }
+      // 无论发送验证码成功还是失败，最后都要关闭发送按钮的 loading 状态
+      this.isSendSmsLoading = false
     }
   }
 }
