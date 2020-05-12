@@ -11,9 +11,9 @@
           slot="icon"
           round
           fit="cover"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="CurrentUser.photo"
         />
-        <div class="nickname" slot="title">昵称</div>
+        <div class="nickname" slot="title">{{CurrentUser.name}}</div>
         <van-button
           class="edit-button"
           size="small"
@@ -23,25 +23,25 @@
       <van-grid class="info-grid" :border="false">
         <van-grid-item>
           <div slot="text" class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{CurrentUser.art_count}}</div>
             <div class="text">头条</div>
           </div>
         </van-grid-item>
         <van-grid-item>
           <div slot="text" class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{CurrentUser.follow_count}}</div>
             <div class="text">关注</div>
           </div>
         </van-grid-item>
         <van-grid-item>
           <div slot="text" class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{CurrentUser.fans_count}}</div>
             <div class="text">粉丝</div>
           </div>
         </van-grid-item>
         <van-grid-item>
           <div slot="text" class="text-wrap">
-            <div class="count">123</div>
+            <div class="count">{{CurrentUser.like_count}}</div>
             <div class="text">获赞</div>
           </div>
         </van-grid-item>
@@ -77,18 +77,23 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getCurrentUser } from '@/api/user'
 export default {
   name: 'MyIndex',
   components: {},
   props: {},
   data () {
-    return {}
+    return {
+      CurrentUser: []
+    }
   },
   computed: {
     ...mapState(['user'])
   },
   watch: {},
-  created () {},
+  created () {
+    this.onloadUser()
+  },
   mounted () {},
   methods: {
     toLogin () {
@@ -106,6 +111,11 @@ export default {
         .catch(() => { // 退出执行这里
           // on cancel
         })
+    },
+    async onloadUser () {
+      const { data } = await getCurrentUser()
+      console.log(data)
+      this.CurrentUser = data.data
     }
   }
 }
