@@ -71,7 +71,7 @@
 
     <van-cell title="消息通知" is-link to="/" />
     <van-cell class="mb-4" title="小智同学" is-link to="/" />
-    <van-cell title="退出登录" class="logout-cell" />
+    <van-cell title="退出登录" v-if="user" class="logout-cell" @click="toLogout" />
   </div>
 </template>
 
@@ -93,6 +93,19 @@ export default {
   methods: {
     toLogin () {
       this.$router.push('/login')
+    },
+    toLogout () {
+      this.$dialog.confirm({
+        title: '退出提示',
+        message: '确认退出吗？'
+      })
+        .then(() => { // 确认执行这里
+          // 清除用户登录状态
+          this.$store.commit('setItem', null)
+        })
+        .catch(() => { // 退出执行这里
+          // on cancel
+        })
     }
   }
 }
