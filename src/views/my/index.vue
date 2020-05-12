@@ -114,7 +114,6 @@ export default {
     },
     async onloadUser () {
       const { data } = await getCurrentUser()
-      console.log(data)
       this.CurrentUser = data.data
     }
   }
