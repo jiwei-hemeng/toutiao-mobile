@@ -140,6 +140,7 @@ export default {
     }
     .edit-button {
       height: 16px;
+      line-height: 16px;
       font-size: 10px;
       color: #a3a3a3;
     }
