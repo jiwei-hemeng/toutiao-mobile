@@ -46,11 +46,11 @@
       <!--
         模板中的 $event 表示事件参数
        -->
-      <!-- <channel-edit
+      <channel-edit
         :user-channels="channels"
         :active="active"
         @close="isChannelEditShow = false"
-      /> -->
+      />
     </van-popup>
   </div>
 </template>
@@ -58,11 +58,13 @@
 <script>
 import { getUserChannels } from '@/api/user'
 import ArticleList from './components/article-list'
+import ChannelEdit from './components/channel-edit'
 
 export default {
   name: 'HomeIndex',
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
   },
   data () {
     return {
