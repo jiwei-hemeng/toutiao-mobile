@@ -2,10 +2,11 @@
   <div class="search-suggestion">
     <van-cell
       icon="search"
-      :title="str"
       v-for="(str, index) in suggestions"
       :key="index"
-    ></van-cell>
+    >
+      <div slot="title" v-html="highlight(str)"></div>
+    </van-cell>
   </div>
 </template>
 
@@ -33,6 +34,14 @@ export default {
         this.suggestions = data.data.options
       }, 200),
       immediate: true // 该回调将会在侦听开始之后被立即调用
+    }
+  },
+  methods: {
+    highlight (str) {
+      return str.replace(
+        new RegExp(this.searchText, 'gi'),
+        `<span style="color: red">${this.searchText}</span>`
+      )
     }
   }
 }
