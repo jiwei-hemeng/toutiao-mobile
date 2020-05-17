@@ -3,20 +3,18 @@
     <van-cell
       title="搜索历史"
     >
-      <div>
-        <span>全部删除</span>
+      <div v-if="isDel">
+        <span @click="delAll">全部删除</span>
         &nbsp;&nbsp;
-        <span>完成</span>
+        <span @click="isDel = false">完成</span>
       </div>
-      <!-- <van-icon name="delete" /> -->
+      <van-icon name="delete" v-else @click="isDel = true" />
     </van-cell>
     <van-cell
-      title="hello"
-    >
-      <van-icon name="close" />
-    </van-cell>
-    <van-cell
-      title="world"
+      :title="history"
+      v-for="(history, index) in searchHistories"
+      :key="index"
+      @click="$emit('search', history)"
     >
       <van-icon name="close" />
     </van-cell>
@@ -24,18 +22,31 @@
 </template>
 
 <script>
+import { removeItem } from '@/utils/storage'
 export default {
   name: 'SearchHistory',
   components: {},
-  props: {},
+  props: {
+    searchHistories: {
+      type: Array,
+      required: true
+    }
+  },
   data () {
-    return {}
+    return {
+      isDel: false
+    }
+  },
+  methods: {
+    delAll () {
+      removeItem('search-histories')
+      this.searchHistories = []
+    }
   },
   computed: {},
   watch: {},
   created () {},
-  mounted () {},
-  methods: {}
+  mounted () {}
 }
 </script>
 
