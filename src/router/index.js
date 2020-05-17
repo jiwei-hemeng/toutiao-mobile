@@ -32,6 +32,11 @@ const routes = [
         path: '/video',
         name: 'video',
         component: () => import('@/views/video/')
+      },
+      {
+        path: '/search',
+        name: 'searchIndex',
+        component: () => import('@/views/search/')
       }
     ]
   }
