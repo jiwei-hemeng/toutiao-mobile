@@ -9,7 +9,7 @@
         @cancel="$router.back()"
         @focus="isResultShow = false"
       />
-      <result v-if="isResultShow" />
+      <result :searchText="searchText" v-if="isResultShow" />
       <suggestion v-else-if="searchText" :searchText="searchText" />
       <history v-else />
     </form>
