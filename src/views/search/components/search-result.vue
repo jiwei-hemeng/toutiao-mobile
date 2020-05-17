@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { getSearchResult } from '@/api/search'
 export default {
   name: 'searchResult',
   props: {
@@ -28,13 +29,26 @@ export default {
     return {
       loading: false,
       finished: false,
-      list: []
+      list: [],
+      page: 1,
+      prePage: 20
     }
   },
   methods: {
-    onLoad () {
-      console.log(123)
-      this.finished = true
+    async onLoad () {
+      const { data } = await getSearchResult({
+        page: this.page,
+        per_page: this.prePage,
+        q: this.searchText
+      })
+      const { results } = data.data
+      this.list.push(...results)
+      this.loading = false
+      if (results.length) {
+        this.page++
+      } else {
+        this.finished = true
+      }
     }
   }
 }
