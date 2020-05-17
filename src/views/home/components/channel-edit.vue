@@ -13,10 +13,6 @@
         @click="isEdit = !isEdit"
       >{{ isEdit ? '完成' : '编辑' }}</van-button>
     </van-cell>
-
-    <!--
-      :class="{ active: index === 激活的频道 }"
-     -->
     <van-grid :gutter="10">
       <van-grid-item
         class="grid-item"
@@ -81,7 +77,6 @@ export default {
     // 计算属性会观测内部依赖数据的变化而重新求值
     recommendChannels () {
       // 思路：所有频道 - 我的频道 = 剩下的推荐频道
-      // filter 方法：过滤数据，根据方法返回的布尔值 true 来收集数据
       // filter 方法查找满足条件的所有元素
       return this.allChannels.filter(channel => {
         // 判断 channel 是否属于用户频道
@@ -91,22 +86,6 @@ export default {
           return userChannel.id === channel.id
         })
       })
-      // const arr = []
-      // // 遍历所有频道
-      // this.allChannels.forEach(channel => {
-      //   let flag = false
-      //   for (let i = 0; i < this.userChannels.length; i++) {
-      //     if (this.userChannels[i].id === channel.id) {
-      //       // 所有频道中的频道项属于用户频道
-      //       flag = true
-      //       break
-      //     }
-      //   }
-      //   if (!flag) {
-      //     arr.push(channel)
-      //   }
-      // })
-      // return arr
     }
   },
   watch: {},
@@ -160,7 +139,6 @@ export default {
       }
     },
     switchChannel (index) {
-      console.log('切换频道')
       // 切换频道
       this.$emit('update-active', index)
       // 关闭弹出层
