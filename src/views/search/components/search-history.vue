@@ -16,7 +16,7 @@
       :key="index"
       @click="$emit('search', history)"
     >
-      <van-icon name="close" />
+      <van-icon name="close" v-show="isDel" />
     </van-cell>
   </div>
 </template>
