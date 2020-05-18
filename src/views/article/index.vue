@@ -30,12 +30,20 @@
           @click="onFollow"
         >{{ article.is_followed ? '已关注' : '关注' }}</van-button>
       </van-cell>
+      <div
+        class="markdown-body"
+        v-html="article.content"
+        ref="article-content"
+      ></div>
     </div>
+    <!-- 文章内容 -->
   </div>
 </template>
 
 <script>
 import { getArticle, addCollect, deleteCollect } from '@/api/article'
+import { ImagePreview } from 'vant'
+import './github-markdown.css'
 export default {
   name: 'ArticleIndex',
   props: {
@@ -51,6 +59,9 @@ export default {
     async loadArticle () {
       const { data } = await getArticle(this.articleId)
       this.article = data.data
+      this.$nextTick(() => {
+        this.handlePerviewImage()
+      })
     },
     async onFollow () {
       this.isFollowLoading = true
@@ -61,6 +72,24 @@ export default {
       }
       this.article.is_followed = !this.article.is_followed
       this.isFollowLoading = false
+    },
+    handlePerviewImage () {
+      // 1. 获取文章内容 DOM 容器
+      const articleContent = this.$refs['article-content']
+      // 2. 得到所有的 img 标签
+      const imgs = articleContent.querySelectorAll('img')
+      const imgPaths = [] // 收集所有的图片路径
+      // 3. 循环 img 列表，给 img 注册点击事件
+      imgs.forEach((img, index) => {
+        imgPaths.push(img.src)
+        img.onclick = function () {
+          // 4. 在事件处理函数中调用 ImagePreview() 预览
+          ImagePreview({
+            images: imgPaths, // 预览图片路径列表
+            startPosition: index // 起始位置
+          })
+        }
+      })
     }
   },
   data () {
@@ -110,5 +139,9 @@ export default {
 }
 ul {
   list-style: unset;
+}
+.markdown-body {
+  padding: 14px;
+  background-color: #fff;
 }
 </style>
