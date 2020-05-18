@@ -22,7 +22,6 @@ import Result from './components/search-result'
 import History from './components/search-history'
 import { mapState } from 'vuex'
 import { setItem, getItem } from '@/utils/storage'
-import { getSearchHistories } from '@/api/search'
 export default {
   name: 'SearchIndex',
   components: {
@@ -34,7 +33,7 @@ export default {
     return {
       isResultShow: false,
       searchText: '',
-      searchHistories: [] // 搜索历史数据
+      searchHistories: getItem('search-histories') || [] // 搜索历史数据
     }
   },
   methods: {
@@ -57,17 +56,7 @@ export default {
     },
 
     async loadSearchHistories () {
-      let searchHistories = getItem('search-histories') || []
-      if (this.user) {
-        const { data } = await getSearchHistories()
-        // 合并数组： [...数组, ...数组]
-        // 把 Set 转为数组：[...Set对象]
-        // 数组去重：[...new Set([...数组, ...数组])
-        searchHistories = [...new Set([
-          ...searchHistories,
-          ...data.data.keywords
-        ])]
-      }
+      const searchHistories = getItem('search-histories') || []
       this.searchHistories = searchHistories
     }
   },
@@ -76,6 +65,11 @@ export default {
   },
   computed: {
     ...mapState(['user'])
+  },
+  watch: {
+    searchHistories () {
+      setItem('search-histories', this.searchHistories)
+    }
   }
 }
 </script>

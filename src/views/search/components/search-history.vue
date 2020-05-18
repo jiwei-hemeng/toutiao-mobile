@@ -14,7 +14,7 @@
       :title="history"
       v-for="(history, index) in searchHistories"
       :key="index"
-      @click="$emit('search', history)"
+      @click="delHistory(history, index)"
     >
       <van-icon name="close" v-show="isDel" />
     </van-cell>
@@ -41,6 +41,13 @@ export default {
     delAll () {
       removeItem('search-histories')
       this.searchHistories = []
+    },
+    delHistory (history, index) {
+      if (this.isDel) {
+        this.searchHistories.splice(index, 1)
+        return
+      }
+      this.$emit('search', history)
     }
   },
   computed: {},
