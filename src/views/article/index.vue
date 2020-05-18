@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getArticle } from '@/api/article'
+import { getArticle, addCollect, deleteCollect } from '@/api/article'
 export default {
   name: 'ArticleIndex',
   props: {
@@ -52,7 +52,17 @@ export default {
       const { data } = await getArticle(this.articleId)
       this.article = data.data
     },
-    onFollow () {}
+    async onFollow () {
+      this.isFollowLoading = true
+      if (this.article.is_followed) {
+        await deleteCollect(this.articleId)
+        this.article.is_followed = false
+        return
+      }
+      await addCollect(this.articleId)
+      this.article.is_followed = true
+      this.isFollowLoading = false
+    }
   },
   data () {
     return {
