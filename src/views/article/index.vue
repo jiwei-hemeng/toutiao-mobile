@@ -56,11 +56,10 @@ export default {
       this.isFollowLoading = true
       if (this.article.is_followed) {
         await deleteCollect(this.articleId)
-        this.article.is_followed = false
-        return
+      } else {
+        await addCollect(this.articleId)
       }
-      await addCollect(this.articleId)
-      this.article.is_followed = true
+      this.article.is_followed = !this.article.is_followed
       this.isFollowLoading = false
     }
   },
