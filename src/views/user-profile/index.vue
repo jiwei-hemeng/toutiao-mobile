@@ -30,7 +30,12 @@
       :value="user.gender ? '女' : '男'"
       @click="isEditGender = true"
     />
-    <van-cell title="生日" is-link :value="user.birthday" />
+    <van-cell
+      title="生日"
+      is-link
+      :value="user.birthday"
+      @click="isEditBirthday = true"
+    />
     <van-popup
       v-model="isEditname"
       position="bottom"
@@ -52,6 +57,17 @@
         @close="isEditGender = false"
       />
     </van-popup>
+    <van-popup
+      v-model="isEditBirthday"
+      position="bottom"
+      :style="{ height: '100%' }"
+    >
+      <updata-birthday
+        v-if="isEditBirthday"
+        v-model="user.birthday"
+        @close="isEditBirthday = false"
+      />
+    </van-popup>
   </div>
 </template>
 
@@ -59,17 +75,20 @@
 import { getUserProfile } from '@/api/user'
 import updataName from './components/updata-name'
 import updataGender from './components/updata-gender'
+import updataBirthday from './components/updata-birthday'
 export default {
   name: 'userFile',
   components: {
     updataName,
-    updataGender
+    updataGender,
+    updataBirthday
   },
   data () {
     return {
       user: {},
       isEditname: false,
-      isEditGender: false
+      isEditGender: false,
+      isEditBirthday: false
     }
   },
   created () {
