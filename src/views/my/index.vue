@@ -18,6 +18,7 @@
           class="edit-button"
           size="small"
           round
+          to="/user/profile"
         >编辑资料</van-button>
       </van-cell>
       <van-grid class="info-grid" :border="false">
