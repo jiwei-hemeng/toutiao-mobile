@@ -10,7 +10,7 @@
       type="file"
       hidden
       ref="file"
-      accept="images/*"
+      accept="image/*"
       @change="onFileChange"
     />
     <van-cell

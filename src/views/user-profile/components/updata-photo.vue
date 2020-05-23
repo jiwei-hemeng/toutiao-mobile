@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.update-photo {
+.updata-photo {
   height: 100%;
 }
 .toolbar {
