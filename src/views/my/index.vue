@@ -48,7 +48,16 @@
         </van-grid-item>
       </van-grid>
     </van-cell-group>
-    <div v-else class="not-login" @click="toLogin">
+    <div
+      v-else
+      class="not-login"
+      @click="$router.push({
+        name: 'login',
+        query: {
+          redirect: '/my'
+        }
+      })"
+    >
       <div>
         <img class="mobile" src="./iphone.png" alt="">
       </div>
@@ -97,9 +106,6 @@ export default {
   },
   mounted () {},
   methods: {
-    toLogin () {
-      this.$router.push('/login')
-    },
     toLogout () {
       this.$dialog.confirm({
         title: '退出提示',
