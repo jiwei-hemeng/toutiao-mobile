@@ -89,6 +89,7 @@ export default {
         const { data } = await login(this.user)
         this.$toast.success('登录成功')
         this.$store.commit('setItem', data.data)
+        this.$store.commit('removeCachePage', 'LayoutIndex')
         this.$router.back()
       } catch (err) {
         console.log(err)
