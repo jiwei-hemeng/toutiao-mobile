@@ -1,23 +1,28 @@
 # toutiao-m
 
-## Project setup
+## 安装项目依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## 启动开发环境
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+## 创建生产环境
 ```
 npm run build
 ```
 
-### Lints and fixes files
+## 启动生产环境
 ```
-npm run lint
+npm run build
+```
+
+## 安装 serve 命令行工具
+```
+npm install --global serve
 ```
 
 ### Customize configuration
