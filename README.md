@@ -22,7 +22,7 @@ npm run build
 
 ## 启动生产环境
 ```shell
-npm run build
+serve -S ./dist
 ```
 
 ## 安装 serve 命令行工具
