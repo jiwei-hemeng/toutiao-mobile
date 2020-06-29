@@ -29,6 +29,3 @@ npm run build
 ```shell
 npm install --global serve
 ```
-
-### Customize configuration
-See [Configuration Reference](https://gitee.com/jiwei-hemeng/toutiao-m.git).
